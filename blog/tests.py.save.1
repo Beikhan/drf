@@ -1,0 +1,16 @@
+from django.test import TestCase
+from .models import Post
+from django.contrib.auth.models import User
+from views import post_delete
+
+class PostTestCase(TestCase):
+    def setUp(self):
+	me = User.objects.get(username='tester')
+	Post.objects.create(author=me, title="test", text="test")
+	Post.objects.create(author=me, title="test2", text="test2")
+
+    def test_delete_count_items(self):
+        """Post deleted correctly"""
+        post = Post.objects.get(title='test'
+)
+	self.assertEqual(Post.objects.filter(title="test").exists()

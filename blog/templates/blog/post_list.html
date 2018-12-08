@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Django Girls blog</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+		<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+		<div class="page-header">
+			<h1><a href="/">Django Girls Blog</a></h1>
+		</div>
+
+		<div class="content container">
+			<div class="row">
+				<div class="col-md-8">
+					{% block content %}
+						{% for post in articles %}
+							<div class="post">
+								<div class="date">
+									{{ post.published_date }}
+								</div>
+								<h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+								<p>{{ post.text|linebreaksbr }}</p>
+								{% if user.is_authenticated %}
+									<p class="btn btn-danger text-white"><a href="{% url 'post_delete' pk=post.pk %}">Delete</a></p>
+								{% endif %}
+							</div>
+						{% endfor %}
+
+						<div class="pagination">
+ 
+							{% if articles.has_previous %}
+								<a href="?page={{ articles.previous_page_number }}">Prev.</a>
+							{% endif %}
+
+							
+							<span class="current">
+								Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+							</span>
+						 
+							{% if articles.has_next %}
+								<a href="?page={{ articles.next_page_number }}">Next</a>
+							{% endif %}
+						 
+						</div>
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+    </body>
+</html>
